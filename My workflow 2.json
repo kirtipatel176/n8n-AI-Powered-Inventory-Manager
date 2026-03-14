@@ -1,0 +1,565 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6bdc694a-7a9e-41c6-b449-51eae0151a88",
+      "name": "When chat message received",
+      "webhookId": "4cc5b78b-b9f8-4c4e-aab7-d2203f513f2f"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "77a98fdc-4580-4bf3-ab43-a82fa41531e4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        224
+      ],
+      "id": "b19d2cfa-a69e-460d-89be-6ae774d966f3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "CfwXoI30NtP41yl6",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        224
+      ],
+      "id": "f58f62aa-3d4e-418d-990f-98ca9e70503d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "it should be able to search the  airtable ",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appYvRQLi5bxBZA2r",
+          "mode": "list",
+          "cachedResultName": "Inventory Tracking",
+          "cachedResultUrl": "https://airtable.com/appYvRQLi5bxBZA2r"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblPCfeTD1XXmKJsM",
+          "mode": "list",
+          "cachedResultName": "Product Inventory",
+          "cachedResultUrl": "https://airtable.com/appYvRQLi5bxBZA2r/tblPCfeTD1XXmKJsM"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        224
+      ],
+      "id": "b9fc6601-011e-4a2a-abec-00bb21ad6656",
+      "name": "Search records in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "O2gEZoNy0hlv3Dw3",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "update the items in airtable",
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appYvRQLi5bxBZA2r",
+          "mode": "list",
+          "cachedResultName": "Inventory Tracking",
+          "cachedResultUrl": "https://airtable.com/appYvRQLi5bxBZA2r"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblPCfeTD1XXmKJsM",
+          "mode": "list",
+          "cachedResultName": "Product Inventory",
+          "cachedResultUrl": "https://airtable.com/appYvRQLi5bxBZA2r/tblPCfeTD1XXmKJsM"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $fromAI(\"RecordID\",\"find the exact id of the item and update at the required\")}}",
+            "Price": "={{ $fromAI(\"newPrice\",\"update the price and airtable \",\"number\")}}",
+            "Manufacturer Price": "={{ $fromAI(\"ManufactoringPrice\",\"update the price of the manufactoringprice \",\"number\")}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Product ID",
+              "displayName": "Product ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Images",
+              "displayName": "Images",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "options": [
+                {
+                  "name": "The High Street",
+                  "value": "The High Street"
+                },
+                {
+                  "name": "The Station Road",
+                  "value": "The Station Road"
+                },
+                {
+                  "name": "The Main Street",
+                  "value": "The Main Street"
+                },
+                {
+                  "name": "The Park Road",
+                  "value": "The Park Road"
+                },
+                {
+                  "name": "The Church Road",
+                  "value": "The Church Road"
+                },
+                {
+                  "name": "The London Road",
+                  "value": "The London Road"
+                },
+                {
+                  "name": "The Victoria Road",
+                  "value": "The Victoria Road"
+                },
+                {
+                  "name": "The Oxford Street",
+                  "value": "The Oxford Street"
+                },
+                {
+                  "name": "The Green Lane",
+                  "value": "The Green Lane"
+                },
+                {
+                  "name": "The Manor Road",
+                  "value": "The Manor Road"
+                },
+                {
+                  "name": "The Church Lane",
+                  "value": "The Church Lane"
+                },
+                {
+                  "name": "The Park Avenue",
+                  "value": "The Park Avenue"
+                },
+                {
+                  "name": "The Queens Road",
+                  "value": "The Queens Road"
+                },
+                {
+                  "name": "The Grange Road",
+                  "value": "The Grange Road"
+                },
+                {
+                  "name": "The Kings Road",
+                  "value": "The Kings Road"
+                },
+                {
+                  "name": "The York Road",
+                  "value": "The York Road"
+                },
+                {
+                  "name": "The Mill Lane",
+                  "value": "The Mill Lane"
+                },
+                {
+                  "name": "The Alexander Road",
+                  "value": "The Alexander Road"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Bag",
+                  "value": "Bag"
+                },
+                {
+                  "name": "Blanket",
+                  "value": "Blanket"
+                },
+                {
+                  "name": "Head Accessory",
+                  "value": "Head Accessory"
+                },
+                {
+                  "name": "Box",
+                  "value": "Box"
+                },
+                {
+                  "name": "Scarf",
+                  "value": "Scarf"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Colors",
+              "displayName": "Colors",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "options": [
+                {
+                  "name": "Burgundy",
+                  "value": "Burgundy"
+                },
+                {
+                  "name": "Dessert Brown",
+                  "value": "Dessert Brown"
+                },
+                {
+                  "name": "Sundown Ash",
+                  "value": "Sundown Ash"
+                },
+                {
+                  "name": "Navy Blue",
+                  "value": "Navy Blue"
+                },
+                {
+                  "name": "Forest Green",
+                  "value": "Forest Green"
+                },
+                {
+                  "name": "Indigo ",
+                  "value": "Indigo "
+                },
+                {
+                  "name": "Wool White",
+                  "value": "Wool White"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Style",
+              "displayName": "Style",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "options": [
+                {
+                  "name": "Women",
+                  "value": "Women"
+                },
+                {
+                  "name": "Men",
+                  "value": "Men"
+                },
+                {
+                  "name": "Children",
+                  "value": "Children"
+                },
+                {
+                  "name": "Dogs",
+                  "value": "Dogs"
+                },
+                {
+                  "name": "Cats",
+                  "value": "Cats"
+                },
+                {
+                  "name": "Unisex",
+                  "value": "Unisex"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Barcode",
+              "displayName": "Barcode",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Inventory",
+              "displayName": "Inventory",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Units Ordered",
+              "displayName": "Units Ordered",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Units Sold",
+              "displayName": "Units Sold",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Manufacturer",
+              "displayName": "Manufacturer",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Manufacturer Price",
+              "displayName": "Manufacturer Price",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Purchase Orders",
+              "displayName": "Purchase Orders",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Sales Orders",
+              "displayName": "Sales Orders",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        320
+      ],
+      "id": "a9ec959d-b6cd-43a7-8820-45024c1bccd0",
+      "name": "Update record in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "O2gEZoNy0hlv3Dw3",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3d4bb404-6341-4874-9c14-31a503dccdab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0f6d2f3898bb3081f42ff540d426bd55bff7b8691bc48bd4fbe21a3867635201"
+  },
+  "id": "MnFPriul7pmfHdCp",
+  "tags": []
+}
